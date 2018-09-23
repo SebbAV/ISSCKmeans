@@ -14,6 +14,8 @@ function getIrisDB() {
 }
 
 function readIrisDB() {
+    //resolve() : success
+    //reject() : error
     return new Promise((resolve, reject) => {
         getIrisDB().then(function (db) {
             let parse = new Parser({ hasHeader: true })
@@ -21,7 +23,6 @@ function readIrisDB() {
                 if (err) {
                     reject(err)
                 } else {
-
                     resolve(data)
                 }
             });
@@ -33,6 +34,7 @@ function readIrisDB() {
 module.exports =
     {
         getIrisDB() {
+            //returns the whole promise in order to be user with .then and .catch methods
             return readIrisDB();
         }
     }
