@@ -1,20 +1,23 @@
 var documentHelper = require('./document.helper');
 
 function getIrisData() {
-    var irisdata = [];
     return documentHelper.getIrisDB().then((data) => {
-        irisdata = data;
+        return data;
     }).catch((error) => {
-        irisdata = undefined;
+        return undefined;
     });
 }
 function kMeans() {
     //Use Promise in order to use .then() and .catch()... PLEASE :)
     return new Promise((resolve, reject) => {
-        var data = getIrisData();
         // resolve(result) if ok
         // reject (error or message) if error
-        //Example of promise in document.helper
+        //Example of promise in document helper
+        getIrisData().then((data) => {
+            //WORK HERE WITH DATA
+        }).catch((error) => {
+            reject(error);
+        });
     });
 }
 module.exports =
