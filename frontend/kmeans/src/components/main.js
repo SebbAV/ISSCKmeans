@@ -7,6 +7,7 @@ class Main extends Component {
         <div>
             {/* Here goes all the components created */}
             Main
+            Cambio!
         </div>
         )
     }
