@@ -9,6 +9,7 @@ var logger = require('morgan');
 
 //this is the way to customize the route
 var exampleRoute = require('./routes/api/v1/example');
+var kmeansRoute = require('./routes/api/v1/kmeans');
 
 var app = express();
 
@@ -24,17 +25,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //here we can link our custom route to the project
 app.use('/', exampleRoute);
+app.use('/kmeans', kmeansRoute)
+
 
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

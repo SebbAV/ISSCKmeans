@@ -15,6 +15,7 @@
     "mongodb": "^3.1.4",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.3",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "text2json": "^2.2.3"
   }
 }
