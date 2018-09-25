@@ -13,7 +13,7 @@ function kMeans() {
         // resolve(result) if ok
         // reject (error or message) if error
         //Example of promise in document helper
-        getIrisData().then((data) => {
+        getIrisData().then(function (data) {
             //WORK HERE WITH DATA
         }).catch((error) => {
             reject(error);
