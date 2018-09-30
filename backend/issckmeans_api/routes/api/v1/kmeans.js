@@ -8,7 +8,7 @@ router.get('/iris', function (req, res, next) {
     kmeansHelper.kmeansResolve().then((data) => {
         responseHelper.respond(res, 200, "iris data", data);
     }).catch((error) => {
-        responseHelper.respond(res, 500, "Error", error);
+        responseHelper.respond(res, 500, "error", error);
     });
 });
 

@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //here we can link our custom route to the project
-app.use('/', exampleRoute);
-app.use('/kmeans', kmeansRoute)
+app.use('/api/', exampleRoute);
+app.use('/api/kmeans', kmeansRoute)
 
 
 

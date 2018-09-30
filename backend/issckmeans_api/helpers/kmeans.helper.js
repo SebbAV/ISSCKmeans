@@ -1,20 +1,24 @@
-var documentHelper = require('./document.helper');
 
+var documentHelper = require('./document.helper');
+const kmeans = require('node-kmeans');
 function getIrisData() {
     return documentHelper.getIrisDB().then((data) => {
         return data;
     }).catch((error) => {
-        return undefined;
+        return error;
     });
 }
 function kMeans() {
-    //Use Promise in order to use .then() and .catch()... PLEASE :)
     return new Promise((resolve, reject) => {
-        // resolve(result) if ok
-        // reject (error or message) if error
-        //Example of promise in document helper
         getIrisData().then(function (data) {
-            //WORK HERE WITH DATA
+            let vectors = new Array();
+            for (let i = 0; i < data.length; i++) {
+                vectors[i] = [data[i]['sepal_length'], data[i]['sepal_width'], data[i]['petal_length'], data[i]['petal_width']];
+            }
+            kmeans.clusterize(vectors, { k: 4 }, (err, res) => {
+                if (err) reject(err);
+                else resolve(res);
+            });
         }).catch((error) => {
             reject(error);
         });
