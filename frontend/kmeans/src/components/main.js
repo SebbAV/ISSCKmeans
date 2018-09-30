@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import logo from './logo.svg';
 import './main.css'
-
+import Bubble from './burbuja';
 import CompDB from './compDB';
 import CompMainV from './compMainV';
 
@@ -26,7 +26,7 @@ class Main extends Component {
       </nav>  
       <CompMainV/> 
       <div className="col-sm-6">
-      <img src={logo} className="App-logo" alt="logo" />
+      <Bubble />
       </div> 
       <CompDB/> 
         </div>
