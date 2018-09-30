@@ -1,6 +1,9 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
+import {reducer as formReducer} from 'redux-form';
+import KMeansReducer from './reducer_kmeans'
 const rootReducer = combineReducers({
-   //Here goes the reducers
+  form:formReducer,
+  kmeans:KMeansReducer
 });
 
 export default rootReducer;
