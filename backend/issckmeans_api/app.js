@@ -10,6 +10,7 @@ var logger = require('morgan');
 //this is the way to customize the route
 var exampleRoute = require('./routes/api/v1/example');
 var kmeansRoute = require('./routes/api/v1/kmeans');
+var competitiveLeanringRoute = require('./routes/api/v1/competitivelearning');
 
 var app = express();
 
@@ -25,7 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //here we can link our custom route to the project
 app.use('/api/', exampleRoute);
-app.use('/api/kmeans', kmeansRoute)
+app.use('/api/kmeans', kmeansRoute);
+app.use('/api/competitivelearning/', competitiveLeanringRoute);
 
 
 
