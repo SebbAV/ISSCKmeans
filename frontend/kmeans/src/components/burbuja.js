@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Bubble} from 'react-chartjs-2';
+import {connect} from 'react-redux'
 
 
 //Clase
@@ -81,11 +82,18 @@ class Bubble2 extends Component{
     render() {
         return (
           <div>
-            <h2>Kmeans Graph</h2>
-            <Bubble data={this.state} />
+            <h2 onClick={()=> console.log(this.props.iris_data)}>Kmeans Graph</h2>
+            <Bubble data={this.state}/>
           </div>
         );
       }
 }
+function mapStateToProps(state){
+  console.log(state)
+  return {
+    iris_data:state.kmeans
+  }
+}
 
-export default Bubble2;
+
+export default connect(mapStateToProps)(Bubble2);
