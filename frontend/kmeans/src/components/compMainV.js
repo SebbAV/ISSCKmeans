@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
+import {iris} from '../actions/index';
+import { bindActionCreators } from 'redux';
 
 class CompMainV extends Component {
   renderField(field) {
@@ -15,8 +17,9 @@ class CompMainV extends Component {
       </div>
     )
   }
-  onSubmit() {
-
+  onSubmit(values) {
+    this.props.iris(values);
+    //this.props.iris_data this is where the info is located once the promise has been completed
   }
   render() {
     const { handleSubmit } = this.props
@@ -44,9 +47,16 @@ function validate(values) {
 
   return errors;
 }
+function mapStateToProps(state){
+  console.log(state)
+  return {
+    iris_data:state.kmeans
+  }
+}
+
 
 
 export default reduxForm({
   validate,
   form: "KMeansForm"
-})(connect(null, null)(CompMainV));
+})(connect(mapStateToProps, {iris})(CompMainV));
