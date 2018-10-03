@@ -1,24 +1,144 @@
-
 var documentHelper = require('./document.helper');
-const kmeans = require('node-kmeans');
+
+//Gets the data from the DB (From the txt)
 function getIrisData() {
     return documentHelper.getIrisDB().then((data) => {
         return data;
     }).catch((error) => {
-        return error;
+        return undefined;
     });
 }
-function kMeans() {
-    return new Promise((resolve, reject) => {
-        getIrisData().then(function (data) {
-            let vectors = new Array();
-            for (let i = 0; i < data.length; i++) {
-                vectors[i] = [data[i]['sepal_length'], data[i]['sepal_width'], data[i]['petal_length'], data[i]['petal_width']];
+
+//Creates n Number of Centroids
+function kCentroidsRan (kNum, xMax, xMin, yMax, yMin){
+    var kCentArr = [];
+    for(i=0;i<kNum;i++){
+        var item1 = Math.floor((Math.random() * (xMax-xMin)) + xMin);
+        var item2 = Math.floor((Math.random() * (yMax-yMin)) + yMin);
+        var arrayCoords = [item1, item2]; 
+        kCentArr.push(arrayCoords);
+    }
+    return kCentArr;
+}
+
+//Gets the max or min values of the column selected
+function getMaxOrMin(data, maxMin, position){
+    var valor = data[0][position];
+    if(maxMin == "max"){
+        //Get the Max
+        for (var i = 0; i < data.length; i++) {
+          if ( valor < data[i][position] ) {
+            valor = data[i][position];
+          }
+        }
+    }else if(maxMin == "min"){
+        //Get the Min
+        for (var i = 0; i < data.length; i++) {
+          if ( valor > data[i][position] ) {
+            valor = data[i][position];
+          }
+        }
+    }else{
+        //Error when not selecting max or min
+        valor = NaN;
+    }
+    return valor
+}
+
+//It gets the groups and change the centroid it represent with the average, returns an array of the new Centroids
+function changeMeanOfGroup(solvedData,kCentR){
+    //Arrey of groups to get the mean
+    var x=0;
+    var y=0;
+    var newKCentr = [];
+    var first = false;
+
+    for (var i = 0; i < kCentR.length; i++) {
+        for(var j = 0; j < solvedData.length; j++){
+          if(solvedData[j][2]==i){
+            if(first!=true){
+                x=solvedData[j][0];
+                y=solvedData[j][1];
+                first = true;
+            }else{
+                x=(x+solvedData[j][0])/2;
+                y=(y+solvedData[j][1])/2;
             }
-            kmeans.clusterize(vectors, { k: 4 }, (err, res) => {
-                if (err) reject(err);
-                else resolve(res);
-            });
+          }
+        }
+        newKCentr.push(x);
+        newKCentr.push(y);
+        newKCentr.push(i);
+        x=0;
+        y=0;
+        first = false;
+    }
+    return newKCentr;
+}
+
+//It will change the group that belongs to the coords with the Centroid
+function joinTheGroupItBelogs(data,kCentR){
+    var solvedData = [];
+    for (var i = 0; i < data.length; i++) {
+        var arrOfDist = [];
+        for (var j = 0; j < kCentR.length; j++) {
+            dist = Math.sqrt((Math.pow(kCentR[j][0]-data[i][0],2))+(Math.pow(kCentR[j][1]-data[i][1],2)));
+            arrOfDist.push();
+        }
+        var minVal = Math.min(null, arrOfDist);
+        var posMinVal =arrOfDist.indexOf(minVal);
+        solvedData.push(data[i][1]);
+        solvedData.push(data[i][2]);
+        solvedData.push(posMinVal);
+    }
+    return solvedData;
+}
+
+//Get the distance of each point and assign it centroid
+function solvedDataWithCentroids(kCentR,data){
+    var solvedData = [];
+    //Get the distance between the data and the centroids and add the number of the centroid
+    for (var i = 0; i < data.length; i++) {
+        var arrOfDist = [];
+        for (var j = 0; j < kCentR.length; j++) {
+            dist = Math.sqrt((Math.pow(kCentR[j][0]-data[i][0],2))+(Math.pow(kCentR[j][1]-data[i][1],2)));
+            arrOfDist.push();
+        }
+        var minVal = Math.min(null, arrOfDist);
+        var posMinVal =arrOfDist.indexOf(minVal);
+        solvedData.push(data[i][1]);
+        solvedData.push(data[i][2]);
+        solvedData.push(posMinVal);
+    }
+    //Get the mean of all the items of the Data with the same Centroid to change the value of the Centroid
+    kCentR = changeMeanOfGroup(solvedData,kCentR);
+    //Change the group it belongs to with the new Centroids
+    solvedData = joinTheGroupItBelogs(solvedData,kCentR);
+
+    return solvedData;
+}
+
+//Main fuction that gets all the data and returns the data grouped with their respective centroid
+function kMeans(kNum) {
+    kNum=3;
+    //Use Promise in order to use .then() and .catch()...
+    return new Promise((resolve, reject) => {
+        // resolve(result) if ok
+        // reject (error or message) if error
+        getIrisData().then((data) => {
+            console.log(data);
+            if(kNum >= 0){
+                var xMax = getMaxOrMin(data,"max",0);
+                var xMin = getMaxOrMin(data,"min",0);
+                var yMax = getMaxOrMin(data,"max",1);
+                var yMin = getMaxOrMin(data,"min",1);
+                var kCentR = kCentroidsRan(kNum, xMax, xMin, yMax, yMin);
+                var processedData = solvedDataWithCentroids(kCentR,data)
+                resolve(processedData);
+            }else{
+                //Send error of not valid number of K's
+                reject("numOfKsNotValid " + kNum)
+            }
         }).catch((error) => {
             reject(error);
         });
