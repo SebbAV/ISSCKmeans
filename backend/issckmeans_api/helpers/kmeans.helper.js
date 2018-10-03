@@ -12,9 +12,13 @@ function getIrisData() {
 //Creates n Number of Centroids
 function kCentroidsRan(kNum, xMax, xMin, yMax, yMin) {
     var kCentArr = [];
+    xMin = parseInt(xMin);
+    yMin = parseInt(yMin);
     for (i = 0; i < kNum; i++) {
         var item1 = Math.floor((Math.random() * (xMax - xMin)) + xMin);
         var item2 = Math.floor((Math.random() * (yMax - yMin)) + yMin);
+        //var item1 = (Math.random() * (xMax - xMin)) + xMin;
+        //var item2 = (Math.random() * (yMax - yMin)) + yMin;
         var arrayCoords = [item1, item2];
         kCentArr.push(arrayCoords);
     }
@@ -52,8 +56,8 @@ function changeMeanOfGroup(solvedData, kCentR) {
     var y = 0;
     var newKCentr = [];
     var first = false;
-
     for (var i = 0; i < kCentR.length; i++) {
+        var tempCentr = [];
         for (var j = 0; j < solvedData.length; j++) {
             if (solvedData[j][2] == i) {
                 if (first != true) {
@@ -66,9 +70,9 @@ function changeMeanOfGroup(solvedData, kCentR) {
                 }
             }
         }
-        newKCentr.push(x);
-        newKCentr.push(y);
-        newKCentr.push(i);
+        tempCentr.push(x);
+        tempCentr.push(y);
+        newKCentr.push(tempCentr);
         x = 0;
         y = 0;
         first = false;
@@ -81,15 +85,17 @@ function joinTheGroupItBelogs(data, kCentR) {
     var solvedData = [];
     for (var i = 0; i < data.length; i++) {
         var arrOfDist = [];
+        var itemSolvedData = [];
         for (var j = 0; j < kCentR.length; j++) {
             dist = Math.sqrt((Math.pow(kCentR[j][0] - data[i][0], 2)) + (Math.pow(kCentR[j][1] - data[i][1], 2)));
-            arrOfDist.push();
+            arrOfDist.push(dist);
         }
-        var minVal = Math.min(null, arrOfDist);
+        var minVal = Math.min.apply(null, arrOfDist);
         var posMinVal = arrOfDist.indexOf(minVal);
-        solvedData.push(data[i][1]);
-        solvedData.push(data[i][2]);
-        solvedData.push(posMinVal);
+        itemSolvedData.push(parseFloat(data[i][0]));
+        itemSolvedData.push(parseFloat(data[i][1]));
+        itemSolvedData.push(posMinVal);
+        solvedData.push(itemSolvedData);
     }
     return solvedData;
 }
@@ -100,27 +106,32 @@ function solvedDataWithCentroids(kCentR, data) {
     //Get the distance between the data and the centroids and add the number of the centroid
     for (var i = 0; i < data.length; i++) {
         var arrOfDist = [];
+        var itemSolvedData = [];
         for (var j = 0; j < kCentR.length; j++) {
             dist = Math.sqrt((Math.pow(kCentR[j][0] - data[i][0], 2)) + (Math.pow(kCentR[j][1] - data[i][1], 2)));
-            arrOfDist.push();
+            arrOfDist.push(dist);
         }
-        var minVal = Math.min(null, arrOfDist);
+        var minVal = Math.min.apply(null, arrOfDist);
         var posMinVal = arrOfDist.indexOf(minVal);
-        solvedData.push(data[i][1]);
-        solvedData.push(data[i][2]);
-        solvedData.push(posMinVal);
+        itemSolvedData.push(parseFloat(data[i][0]));
+        itemSolvedData.push(parseFloat(data[i][1]));
+        itemSolvedData.push(posMinVal);
+        solvedData.push(itemSolvedData);
     }
-    //Get the mean of all the items of the Data with the same Centroid to change the value of the Centroid
-    kCentR = changeMeanOfGroup(solvedData, kCentR);
-    //Change the group it belongs to with the new Centroids
-    solvedData = joinTheGroupItBelogs(solvedData, kCentR);
+    for(var i = 0; i < 10; i++){
+        console.log(kCentR);
+        //Get the mean of all the items of the Data with the same Centroid to change the value of the Centroid
+        kCentR = changeMeanOfGroup(solvedData, kCentR);
+        //Change the group it belongs to with the new Centroids
+        solvedData = joinTheGroupItBelogs(solvedData, kCentR);
+    }
+    
 
     return solvedData;
 }
 
 //Main fuction that gets all the data and returns the data grouped with their respective centroid
 function kMeans(kNum) {
-    kNum = 3;
     //Use Promise in order to use .then() and .catch()...
     return new Promise((resolve, reject) => {
         // resolve(result) if ok
@@ -146,7 +157,7 @@ function kMeans(kNum) {
 }
 module.exports =
     {
-        kmeansResolve: function () {
-            return kMeans();
+        kmeansResolve: function (k) {
+            return kMeans(k);
         }
     }
