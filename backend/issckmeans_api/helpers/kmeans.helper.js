@@ -17,8 +17,18 @@ function kCentroidsRan(kNum, xMax, xMin, yMax, yMin) {
     for (i = 0; i < kNum; i++) {
         var item1 = Math.floor((Math.random() * (xMax - xMin)) + xMin);
         var item2 = Math.floor((Math.random() * (yMax - yMin)) + yMin);
-        //var item1 = (Math.random() * (xMax - xMin)) + xMin;
-        //var item2 = (Math.random() * (yMax - yMin)) + yMin;
+        var arrayCoords = [item1, item2];
+        kCentArr.push(arrayCoords);
+    }
+    return kCentArr;
+}
+
+//Select n Number of Centroids
+function kCentroidsRanFromArray(kNum,data){
+    var kCentArr = [];
+    for (i = 0; i < kNum; i++) {
+        var item1 = data[i][0];
+        var item2 = data[i][1];
         var arrayCoords = [item1, item2];
         kCentArr.push(arrayCoords);
     }
@@ -119,7 +129,6 @@ function solvedDataWithCentroids(kCentR, data) {
         solvedData.push(itemSolvedData);
     }
     for(var i = 0; i < 10; i++){
-        console.log(kCentR);
         //Get the mean of all the items of the Data with the same Centroid to change the value of the Centroid
         kCentR = changeMeanOfGroup(solvedData, kCentR);
         //Change the group it belongs to with the new Centroids
@@ -139,11 +148,13 @@ function kMeans(kNum) {
         getIrisData().then((data) => {
             data = jsonToArrayHelper.jsonToArray(data);
             if (kNum >= 0) {
-                var xMax = getMaxOrMin(data, "max", 0);
-                var xMin = getMaxOrMin(data, "min", 0);
-                var yMax = getMaxOrMin(data, "max", 1);
-                var yMin = getMaxOrMin(data, "min", 1);
-                var kCentR = kCentroidsRan(kNum, xMax, xMin, yMax, yMin);
+                //This for random Centroids
+                //var xMax = getMaxOrMin(data, "max", 0);
+                //var xMin = getMaxOrMin(data, "min", 0);
+                //var yMax = getMaxOrMin(data, "max", 1);
+                //var yMin = getMaxOrMin(data, "min", 1);
+                //var kCentR = kCentroidsRan(kNum, xMax, xMin, yMax, yMin);
+                var kCentR = kCentroidsRanFromArray(kNum,data);
                 var processedData = solvedDataWithCentroids(kCentR, data)
                 resolve(processedData);
             } else {
