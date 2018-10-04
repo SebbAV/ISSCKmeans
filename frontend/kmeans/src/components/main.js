@@ -4,6 +4,7 @@ import './main.css'
 import Bubble from './burbuja';
 import CompDB from './compDB';
 import CompMainV from './compMainV';
+import './main.css';
 
 
 class Main extends Component {
@@ -26,7 +27,7 @@ class Main extends Component {
       </nav>  
       <CompMainV/> 
       <div className="col-sm-6">
-      <Bubble />
+      <Bubble className="w"/>
       </div> 
       <CompDB/> 
         </div>

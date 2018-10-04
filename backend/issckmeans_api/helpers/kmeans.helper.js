@@ -24,7 +24,7 @@ function kCentroidsRan(kNum, xMax, xMin, yMax, yMin) {
 }
 
 //Select n Number of Centroids
-function kCentroidsRanFromArray(kNum,data){
+function kCentroidsRanFromArray(kNum, data) {
     var kCentArr = [];
     for (i = 0; i < kNum; i++) {
         var item1 = data[i][0];
@@ -128,13 +128,13 @@ function solvedDataWithCentroids(kCentR, data) {
         itemSolvedData.push(posMinVal);
         solvedData.push(itemSolvedData);
     }
-    for(var i = 0; i < 10; i++){
+    for (var i = 0; i < 10; i++) {
         //Get the mean of all the items of the Data with the same Centroid to change the value of the Centroid
         kCentR = changeMeanOfGroup(solvedData, kCentR);
         //Change the group it belongs to with the new Centroids
         solvedData = joinTheGroupItBelogs(solvedData, kCentR);
     }
-    
+    solvedData.push(kCentR);
 
     return solvedData;
 }
@@ -154,7 +154,7 @@ function kMeans(kNum) {
                 //var yMax = getMaxOrMin(data, "max", 1);
                 //var yMin = getMaxOrMin(data, "min", 1);
                 //var kCentR = kCentroidsRan(kNum, xMax, xMin, yMax, yMin);
-                var kCentR = kCentroidsRanFromArray(kNum,data);
+                var kCentR = kCentroidsRanFromArray(kNum, data);
                 var processedData = solvedDataWithCentroids(kCentR, data)
                 resolve(processedData);
             } else {
