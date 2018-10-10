@@ -151,7 +151,7 @@ function kMeans(kNum) {
                 //This for random Centroids
                 //var xMax = getMaxOrMin(data, "max", 0);
                 //var xMin = getMaxOrMin(data, "min", 0);
-                //var yMax = getMaxOrMin(data, "max", 1);
+                //var yMax = getMaxOrMin(data, "max", 1);   
                 //var yMin = getMaxOrMin(data, "min", 1);
                 //var kCentR = kCentroidsRan(kNum, xMax, xMin, yMax, yMin);
                 var kCentR = kCentroidsRanFromArray(kNum, data);
