@@ -18,8 +18,23 @@ class CompMainV extends Component {
     )
   }
   onSubmit(values) {
+   // this.loadCanvas()
     this.props.iris(values);
     //this.props.iris_data this is where the info is located once the promise has been completed
+  }
+  loadCanvas(){
+    var width = 400,
+    height = 400,
+    buffer = new Uint8ClampedArray(width * height * 4);
+    for(var y = 0; y < height; y++) {
+      for(var x = 0; x < width; x++) {
+          var pos = (y * width + x) * 4; // position in buffer based on x and y
+      //    buffer[pos  ] = ...;           // some R value [0, 255]
+       //   buffer[pos+1] = ...;           // some G value
+       //   buffer[pos+2] = ...;           // some B value
+       //   buffer[pos+3] = 255;           // set alpha channel
+      }
+  }
   }
   render() {
     const { handleSubmit } = this.props
@@ -32,11 +47,14 @@ class CompMainV extends Component {
             component={this.renderField} />
           <Field
             label="Props"
-            name="props"
+            name="opt"
             component={this.renderField} />
           <button type="submit" className="btn btn-primary"> Ok </button>
 
         </form>
+        <div>
+          <canvas id="canvas" />
+        </div>
       </div>
     )
   }
