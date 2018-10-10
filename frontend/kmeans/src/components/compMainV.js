@@ -18,8 +18,41 @@ class CompMainV extends Component {
     )
   }
   onSubmit(values) {
+    this.loadCanvas()
     this.props.iris(values);
     //this.props.iris_data this is where the info is located once the promise has been completed
+  }
+  loadCanvas(){
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    canvas.width = 40;
+    canvas.height = 30;
+    var imgData = ctx.getImageData(0, 0, 40, 30);
+    var data = imgData.data;
+
+    // manipulate some pixel elements
+    for (var i = 0; i < data.length; i += 4) {
+        data[i] = 1; //red
+        data[i+1] = 255; //green
+        data[i+2] = 255; //blue
+        data[i + 3] = 100; // make this pixel opaque
+    }
+
+    // put the modified pixels back on the canvas
+    ctx.putImageData(imgData, 0, 0);
+
+    // create a new img object
+    var image = new Image();
+
+    // set the img.src to the canvas data url
+    image.src = canvas.toDataURL();
+    document.body.appendChild(image);
+    return (
+      <div>
+        
+      </div>
+    )
   }
   render() {
     const { handleSubmit } = this.props
@@ -37,6 +70,9 @@ class CompMainV extends Component {
           <button type="submit" className="btn btn-primary"> Ok </button>
 
         </form>
+        <div>
+          <canvas id="canvas" />
+        </div>
       </div>
     )
   }
