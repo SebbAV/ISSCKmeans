@@ -18,41 +18,23 @@ class CompMainV extends Component {
     )
   }
   onSubmit(values) {
-    this.loadCanvas()
+   // this.loadCanvas()
     this.props.iris(values);
     //this.props.iris_data this is where the info is located once the promise has been completed
   }
   loadCanvas(){
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-
-    canvas.width = 40;
-    canvas.height = 30;
-    var imgData = ctx.getImageData(0, 0, 40, 30);
-    var data = imgData.data;
-
-    // manipulate some pixel elements
-    for (var i = 0; i < data.length; i += 4) {
-        data[i] = 1; //red
-        data[i+1] = 255; //green
-        data[i+2] = 255; //blue
-        data[i + 3] = 100; // make this pixel opaque
-    }
-
-    // put the modified pixels back on the canvas
-    ctx.putImageData(imgData, 0, 0);
-
-    // create a new img object
-    var image = new Image();
-
-    // set the img.src to the canvas data url
-    image.src = canvas.toDataURL();
-    document.body.appendChild(image);
-    return (
-      <div>
-        
-      </div>
-    )
+    var width = 400,
+    height = 400,
+    buffer = new Uint8ClampedArray(width * height * 4);
+    for(var y = 0; y < height; y++) {
+      for(var x = 0; x < width; x++) {
+          var pos = (y * width + x) * 4; // position in buffer based on x and y
+      //    buffer[pos  ] = ...;           // some R value [0, 255]
+       //   buffer[pos+1] = ...;           // some G value
+       //   buffer[pos+2] = ...;           // some B value
+       //   buffer[pos+3] = 255;           // set alpha channel
+      }
+  }
   }
   render() {
     const { handleSubmit } = this.props
@@ -65,7 +47,7 @@ class CompMainV extends Component {
             component={this.renderField} />
           <Field
             label="Props"
-            name="props"
+            name="opt"
             component={this.renderField} />
           <button type="submit" className="btn btn-primary"> Ok </button>
 

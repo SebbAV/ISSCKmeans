@@ -1,11 +1,16 @@
 import numpy as np
 from PIL import Image
 import random
+import sys
+import codecs
 import json
+import pandas as pd
+np.set_printoptions(threshold=np.nan)
+param = sys.argv
+param.remove(param[0])
 class kmeans():
     def __init__(self, filepath, k = 10):
         self.img = Image.open(filepath)
-        self.img.show()
         self.k = k
 
         self.arr = np.array(self.img)
@@ -77,7 +82,6 @@ class kmeans():
         np.apply_along_axis(update_clusters, 2, self.arr_extended)
 
 
-
     def generate_image(self, warholize=False):
         
         def mean_mnrgb(v_lst):
@@ -99,11 +103,10 @@ class kmeans():
                 self.new_arr[m, n] = pixelval
 
         self.new_img = Image.fromarray(self.new_arr)
-        self.new_img.show()
-        #Create dict
         dic = {}
-        dic['content'] = self.new_arr
-        print (self.new_img.encode("base64"))
+        dic['rgb'] = self.new_arr
+
+        print(pd.Series(dic).to_json(orient='values'))
 
 def euclidean_dist_np(p1,p2):
      return np.linalg.norm(p1-p2)
@@ -132,8 +135,8 @@ def implement(infile, k, warholize=False):
     x.generate_image(warholize=warholize)
 
 
-FILE_IN = './resources/house.jpg'
-K=2
+FILE_IN = 'C:\\Users\\Joche\\Documents\\Salle Bajio 7mo Semestre\\Desarrollo Colaborativo\\REPO_Colaborativo\\ISSCKmeans\\backend\\issckmeans_api\\scripts\\house.jpg'
+K = int(param[0])
 
 
 if __name__ == "__main__":

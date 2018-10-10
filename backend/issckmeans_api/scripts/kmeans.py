@@ -136,7 +136,7 @@ def implement(infile, k, warholize=False):
     x.generate_image(warholize=warholize)
 
 
-FILE_IN = 'C:\\Users\\Joche\\Documents\\Salle Bajio 7mo Semestre\\Desarrollo Colaborativo\\REPO_Colaborativo\\ISSCKmeans\\backend\\issckmeans_api\\scripts\\house.jpg'
+FILE_IN = 'C:\\Users\\Akarok\\Desktop\\Stuff\\ISSCKMeans\\ISSCKmeans\\backend\\issckmeans_api\\scripts\\house.jpg'
 K = int(param[0])
 
 
